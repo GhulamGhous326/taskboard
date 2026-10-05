@@ -11,11 +11,13 @@ export interface Task {
 
 export type StatusFilter = 'all' | 'active' | 'completed';
 export type SortKey = 'newest' | 'oldest' | 'priority';
+export type PriorityFilter = 'all' | Priority;
 
 export interface FilterState {
   query: string;
   status: StatusFilter;
   sort: SortKey;
+  priority: PriorityFilter;
 }
 
 export interface Stats {
@@ -23,4 +25,11 @@ export interface Stats {
   completed: number;
   active: number;
   completionRate: number; // 0-100
+}
+
+export type DueTone = 'danger' | 'warn' | 'muted';
+
+export interface DueInfo {
+  text: string;
+  tone: DueTone;
 }

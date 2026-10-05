@@ -1,8 +1,9 @@
 # TaskBoard
 
 A task dashboard demo built with **React 18 + TypeScript + Vite** by Ghulam Ghous.
-Search, filter, sort, add, complete and delete tasks, with live stats, simulated
-async loading, and localStorage persistence.
+Search, filter (status + priority), sort, add, complete, edit inline and delete
+tasks, with live stats, relative due-date labels, simulated async loading, and
+localStorage persistence. Dark premium UI matching the Neuravis portfolio brand.
 
 **Live demo:** _(deploy `dist/` to Netlify and put the URL here)_
 **Demo state hooks:** append `?demo=error` to see the error state, `?demo=empty` for the empty state.
@@ -40,7 +41,7 @@ flowchart TD
 
 - **UI state** lives in `App.tsx` (`tasks`, `loadState`, `filters`).
 - **Business logic** lives in `logic.ts` as pure functions, no React imports,
-  so it is unit-tested with Vitest (10 tests, all passing).
+  so it is unit-tested with Vitest (15 tests, all passing).
 - **Data layer** (`data.ts`) simulates a backend: seed data on first run,
   localStorage after that, 900ms latency, `?demo=error|empty` hooks.
 

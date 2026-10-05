@@ -1,4 +1,4 @@
-import type { FilterState, SortKey, StatusFilter } from '../types';
+import type { FilterState, PriorityFilter, SortKey, StatusFilter } from '../types';
 
 interface Props {
   filters: FilterState;
@@ -15,6 +15,13 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'newest', label: 'Newest' },
   { value: 'oldest', label: 'Oldest' },
   { value: 'priority', label: 'Priority' },
+];
+
+const PRIORITY_OPTIONS: { value: PriorityFilter; label: string }[] = [
+  { value: 'all', label: 'All priorities' },
+  { value: 'high', label: 'High' },
+  { value: 'medium', label: 'Medium' },
+  { value: 'low', label: 'Low' },
 ];
 
 export default function FilterBar({ filters, onChange }: Props) {
@@ -41,6 +48,20 @@ export default function FilterBar({ filters, onChange }: Props) {
           </button>
         ))}
       </div>
+      <label className="sort-label">
+        Priority
+        <select
+          value={filters.priority}
+          onChange={(e) => onChange({ ...filters, priority: e.target.value as PriorityFilter })}
+          aria-label="Filter by priority"
+        >
+          {PRIORITY_OPTIONS.map((o) => (
+            <option key={o.value} value={o.value}>
+              {o.label}
+            </option>
+          ))}
+        </select>
+      </label>
       <label className="sort-label">
         Sort
         <select

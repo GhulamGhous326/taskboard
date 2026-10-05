@@ -1,9 +1,7 @@
-import type { Task } from './types';
+import type { DueInfo, FilterState, Stats, Task } from './types';
 
 // Pure business logic: filtering, sorting, stats, mutations.
 // Kept UI-free so it is unit-testable (see logic.test.ts).
-
-import type { FilterState, Stats } from './types';
 
 const PRIORITY_RANK: Record<Task['priority'], number> = { high: 0, medium: 1, low: 2 };
 
@@ -12,6 +10,7 @@ export function filterTasks(tasks: Task[], f: FilterState): Task[] {
   let out = tasks.filter((t) => {
     if (f.status === 'active' && t.done) return false;
     if (f.status === 'completed' && !t.done) return false;
+    if (f.priority !== 'all' && t.priority !== f.priority) return false;
     if (q && !t.title.toLowerCase().includes(q)) return false;
     return true;
   });
@@ -41,6 +40,16 @@ export function removeTask(tasks: Task[], id: string): Task[] {
   return tasks.filter((t) => t.id !== id);
 }
 
+export function clearCompleted(tasks: Task[]): Task[] {
+  return tasks.filter((t) => !t.done);
+}
+
+export function editTask(tasks: Task[], id: string, title: string): Task[] {
+  const v = title.trim();
+  if (!v) return tasks;
+  return tasks.map((t) => (t.id === id ? { ...t, title: v } : t));
+}
+
 export function addTask(
   tasks: Task[],
   input: { title: string; priority: Task['priority']; dueDate: string },
@@ -61,4 +70,15 @@ export function addTask(
 
 export function isOverdue(t: Task, todayIso: string): boolean {
   return !t.done && t.dueDate < todayIso;
+}
+
+const DAY_MS = 86_400_000;
+
+export function dueLabel(dueDate: string, todayIso: string, done: boolean): DueInfo {
+  if (done) return { text: 'Done', tone: 'muted' };
+  const diff = Math.round((Date.parse(dueDate) - Date.parse(todayIso)) / DAY_MS);
+  if (diff < 0) return { text: diff === -1 ? 'Overdue by 1d' : `Overdue by ${-diff}d`, tone: 'danger' };
+  if (diff === 0) return { text: 'Due today', tone: 'warn' };
+  if (diff === 1) return { text: 'Due tomorrow', tone: 'warn' };
+  return { text: `Due in ${diff}d`, tone: 'muted' };
 }

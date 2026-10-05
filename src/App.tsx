@@ -1,7 +1,15 @@
 import { useEffect, useMemo, useState } from 'react';
 import type { FilterState, Priority, Task } from './types';
 import { fetchTasks, persist } from './data';
-import { addTask, computeStats, filterTasks, removeTask, toggleTask } from './logic';
+import {
+  addTask,
+  clearCompleted,
+  computeStats,
+  editTask,
+  filterTasks,
+  removeTask,
+  toggleTask,
+} from './logic';
 import StatsCards from './components/StatsCards';
 import FilterBar from './components/FilterBar';
 import TaskForm from './components/TaskForm';
@@ -12,7 +20,12 @@ type LoadState = 'loading' | 'ready' | 'error';
 export default function App() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [loadState, setLoadState] = useState<LoadState>('loading');
-  const [filters, setFilters] = useState<FilterState>({ query: '', status: 'all', sort: 'newest' });
+  const [filters, setFilters] = useState<FilterState>({
+    query: '',
+    status: 'all',
+    sort: 'newest',
+    priority: 'all',
+  });
 
   useEffect(() => {
     let cancelled = false;
@@ -53,9 +66,16 @@ export default function App() {
     <div className="app">
       <header className="app-header">
         <div>
-          <h1>TaskBoard</h1>
+          <h1>
+            TaskBoard<i>.</i>
+          </h1>
           <p className="subtitle">A React + TypeScript dashboard demo by Ghulam Ghous</p>
         </div>
+        {stats.completed > 0 && loadState === 'ready' && (
+          <button type="button" className="btn-ghost" onClick={() => update(clearCompleted(tasks))}>
+            Clear completed
+          </button>
+        )}
       </header>
 
       <main>
@@ -90,15 +110,14 @@ export default function App() {
               tasks={visible}
               onToggle={(id) => update(toggleTask(tasks, id))}
               onRemove={(id) => update(removeTask(tasks, id))}
+              onEdit={(id, title) => update(editTask(tasks, id, title))}
             />
           </>
         )}
       </main>
 
       <footer className="app-footer">
-        <p>
-          Built with React, TypeScript and Vite. Tasks are stored in your browser only.
-        </p>
+        <p>Built with React, TypeScript and Vite. Tasks are stored in your browser only.</p>
       </footer>
     </div>
   );
