@@ -2,6 +2,7 @@ import type { FilterState, PriorityFilter, SortKey, StatusFilter } from '../type
 
 interface Props {
   filters: FilterState;
+  tags: string[];
   onChange: (f: FilterState) => void;
 }
 
@@ -15,6 +16,7 @@ const SORT_OPTIONS: { value: SortKey; label: string }[] = [
   { value: 'newest', label: 'Newest' },
   { value: 'oldest', label: 'Oldest' },
   { value: 'priority', label: 'Priority' },
+  { value: 'due', label: 'Due date' },
 ];
 
 const PRIORITY_OPTIONS: { value: PriorityFilter; label: string }[] = [
@@ -24,7 +26,7 @@ const PRIORITY_OPTIONS: { value: PriorityFilter; label: string }[] = [
   { value: 'low', label: 'Low' },
 ];
 
-export default function FilterBar({ filters, onChange }: Props) {
+export default function FilterBar({ filters, tags, onChange }: Props) {
   return (
     <div className="filter-bar" role="search">
       <input
@@ -58,6 +60,21 @@ export default function FilterBar({ filters, onChange }: Props) {
           {PRIORITY_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>
               {o.label}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="sort-label">
+        Tag
+        <select
+          value={filters.tag}
+          onChange={(e) => onChange({ ...filters, tag: e.target.value })}
+          aria-label="Filter by tag"
+        >
+          <option value="all">All tags</option>
+          {tags.map((tag) => (
+            <option key={tag} value={tag}>
+              #{tag}
             </option>
           ))}
         </select>

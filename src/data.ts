@@ -4,12 +4,12 @@ const STORAGE_KEY = 'taskboard.tasks.v1';
 
 // Demo seed data shown on first run.
 const SEED: Task[] = [
-  { id: 'seed-1', title: 'Review pull request #42', done: true, priority: 'high', dueDate: '2026-10-02', createdAt: '2026-09-28T09:00:00Z' },
-  { id: 'seed-2', title: 'Update landing page hero copy', done: false, priority: 'medium', dueDate: '2026-10-08', createdAt: '2026-09-29T09:00:00Z' },
-  { id: 'seed-3', title: 'Fix mobile nav overlap on small screens', done: false, priority: 'high', dueDate: '2026-10-06', createdAt: '2026-09-30T09:00:00Z' },
-  { id: 'seed-4', title: 'Write release notes for v2.1', done: false, priority: 'low', dueDate: '2026-10-15', createdAt: '2026-10-01T09:00:00Z' },
-  { id: 'seed-5', title: 'Refactor date formatting helpers', done: true, priority: 'low', dueDate: '2026-09-30', createdAt: '2026-09-27T09:00:00Z' },
-  { id: 'seed-6', title: 'Add empty-state illustration', done: false, priority: 'medium', dueDate: '2026-10-12', createdAt: '2026-10-02T09:00:00Z' },
+  { id: 'seed-1', title: 'Review pull request #42', done: true, priority: 'high', dueDate: '2026-10-02', createdAt: '2026-09-28T09:00:00Z', tags: ['work'] },
+  { id: 'seed-2', title: 'Update landing page hero copy', done: false, priority: 'medium', dueDate: '2026-10-08', createdAt: '2026-09-29T09:00:00Z', tags: ['client', 'design'] },
+  { id: 'seed-3', title: 'Fix mobile nav overlap on small screens', done: false, priority: 'high', dueDate: '2026-10-06', createdAt: '2026-09-30T09:00:00Z', tags: ['work', 'urgent'] },
+  { id: 'seed-4', title: 'Write release notes for v2.1', done: false, priority: 'low', dueDate: '2026-10-15', createdAt: '2026-10-01T09:00:00Z', tags: ['docs'] },
+  { id: 'seed-5', title: 'Refactor date formatting helpers', done: true, priority: 'low', dueDate: '2026-09-30', createdAt: '2026-09-27T09:00:00Z', tags: ['work'] },
+  { id: 'seed-6', title: 'Add empty-state illustration', done: false, priority: 'medium', dueDate: '2026-10-12', createdAt: '2026-10-02T09:00:00Z', tags: ['design'] },
 ];
 
 function readStored(): Task[] | null {

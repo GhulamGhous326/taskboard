@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import type { Priority } from '../types';
+import { parseTags } from '../logic';
 
 interface Props {
-  onAdd: (input: { title: string; priority: Priority; dueDate: string }) => void;
+  onAdd: (input: { title: string; priority: Priority; dueDate: string; tags: string[] }) => void;
 }
 
 function todayPlus(days: number): string {
@@ -15,6 +16,7 @@ export default function TaskForm({ onAdd }: Props) {
   const [title, setTitle] = useState('');
   const [priority, setPriority] = useState<Priority>('medium');
   const [dueDate, setDueDate] = useState(() => todayPlus(7));
+  const [tagsInput, setTagsInput] = useState('');
   const [error, setError] = useState('');
 
   function submit(e: React.FormEvent) {
@@ -23,10 +25,11 @@ export default function TaskForm({ onAdd }: Props) {
       setError('Give the task a title.');
       return;
     }
-    onAdd({ title: title.trim(), priority, dueDate });
+    onAdd({ title: title.trim(), priority, dueDate, tags: parseTags(tagsInput) });
     setTitle('');
     setPriority('medium');
     setDueDate(todayPlus(7));
+    setTagsInput('');
     setError('');
   }
 
@@ -40,6 +43,15 @@ export default function TaskForm({ onAdd }: Props) {
         value={title}
         onChange={(e) => setTitle(e.target.value)}
         maxLength={120}
+      />
+      <input
+        type="text"
+        className="task-input task-tags-input"
+        placeholder="tags, comma separated"
+        aria-label="Tags (comma separated)"
+        value={tagsInput}
+        onChange={(e) => setTagsInput(e.target.value)}
+        maxLength={60}
       />
       <select
         value={priority}

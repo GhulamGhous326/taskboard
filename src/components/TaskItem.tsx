@@ -67,6 +67,9 @@ export default function TaskItem({ task, index, onToggle, onRemove, onEdit }: Pr
         <span className="task-meta">
           <span className={'priority priority-' + task.priority}>{PRIORITY_LABEL[task.priority]}</span>
           <span className={'due due-' + due.tone}>{due.text}</span>
+          {task.tags.map((tag) => (
+            <span className="tag" key={tag}>#{tag}</span>
+          ))}
         </span>
       </div>
       {!editing && (
