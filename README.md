@@ -6,7 +6,7 @@ edit inline and delete tasks, with live stats, relative due-date labels, an
 overdue banner, a month calendar view, tag pills, simulated async loading, and
 localStorage persistence. Dark premium UI matching the Neuravis portfolio brand.
 
-**Live demo:** _(deploy `dist/` to Netlify and put the URL here)_
+**Live demo:** https://ghous-taskboard.netlify.app
 **Demo state hooks:** append `?demo=error` to see the error state, `?demo=empty` for the empty state.
 
 ## Run it
