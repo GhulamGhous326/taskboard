@@ -166,4 +166,26 @@ describe('calendar helpers', () => {
     expect(Object.keys(grouped).sort()).toEqual(['2026-10-01', '2026-10-05', '2026-10-20']);
     expect(grouped['2026-10-01'].map((t) => t.id)).toEqual(['1']);
   });
+
+  it('a task lands on its exact due-date cell in the month grid', () => {
+    const task: Task = { id: 'nov', title: 'Ship November demo', done: false, priority: 'high', dueDate: '2026-11-06', createdAt: '2026-11-01T09:00:00Z', tags: [] };
+    const grouped = groupTasksByDue([task]);
+    const grid = getMonthGrid(2026, 10); // November 2026
+    const cell = grid.flat().find((c) => c.iso === '2026-11-06');
+    expect(cell).toBeDefined();
+    expect(cell?.inMonth).toBe(true);
+    expect(grouped['2026-11-06'].map((t) => t.id)).toEqual(['nov']);
+  });
+
+  it('a task due today appears on today’s cell in the current month grid', () => {
+    const now = new Date();
+    const iso = now.toISOString().slice(0, 10);
+    const task: Task = { id: 'today', title: 'Due today', done: false, priority: 'medium', dueDate: iso, createdAt: iso + 'T09:00:00Z', tags: [] };
+    const grouped = groupTasksByDue([task]);
+    const grid = getMonthGrid(now.getUTCFullYear(), now.getUTCMonth());
+    const cell = grid.flat().find((c) => c.iso === iso);
+    expect(cell).toBeDefined();
+    expect(cell?.inMonth).toBe(true);
+    expect(grouped[iso].map((t) => t.id)).toEqual(['today']);
+  });
 });
